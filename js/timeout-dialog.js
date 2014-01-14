@@ -54,6 +54,7 @@ String.prototype.format = function() {
       sign_out_button_text: 'No, Sign me out',
       keep_alive_url: '/keep-alive',
       logout_url: null,
+      logout_http_method: 'POST',
       logout_redirect_url: '/',
       restart_on_yes: true,
       dialog_width: 350
@@ -158,8 +159,12 @@ String.prototype.format = function() {
         this.destroyDialog();
 
         if (settings.logout_url != null) {
-            $.post(settings.logout_url, function(data){
-                self.redirectLogout(is_forced);
+            $.ajax({
+                type: settings.logout_http_method,
+                url: settings.logout_url,
+                success: function(data){
+                    self.redirectLogout(is_forced);
+                }
             });
         }
         else {
